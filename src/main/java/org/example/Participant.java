@@ -3,33 +3,45 @@ package org.example;
 
 
 public class Participant {
-    double MD;
-    double MND;
+    double MDJunior;
+    double MNDJunior;
+    double MDTrainee;
+    double MNDTrainee;
+
+    double MDNoob;
+    double MNDNoob;
     Participant () {
-        MD = 0;
-        MND = 0;
+        MDJunior = 0;
+        MNDJunior = 0;
+        MDTrainee = 0;
+        MNDTrainee = 0;
+        MDNoob = 0;
+        MNDNoob = 0;
     }
 
-    public void changeMD(double koef) {
-        MD = MD + koef *(1-MD);
+    public void changeMDJunior(double koef) {
+        MDJunior = MDJunior + koef * (1 - MDJunior);
+
     }
 
-    public void changeMND(double koef) {
-        MND = MND + koef * (1-MND);
+    public void changeMNDJunior(double koef) {
+        MNDJunior = MNDJunior + koef * (1 - MNDJunior);
+    }
+    public void changeMDTrainee(double koef) {
+        MDTrainee = MDTrainee + koef * (1 - MDTrainee);
+
     }
 
-    public double getMD() {
-        return MD;
+    public void changeMNDTrainee(double koef) {
+        MNDTrainee = MNDTrainee + koef * (1 - MNDTrainee);
+    }
+    public void changeMDNoob(double koef) {
+        MDNoob = MDNoob + koef * (1 - MDNoob);
+
     }
 
-    public void setMD(double MD) {
-        this.MD = MD;
-    }
-    public double getMND() {
-        return MND;
+    public void changeMNDNoob(double koef) {
+        MNDNoob = MNDNoob + koef * (1 - MNDNoob);
     }
 
-    public void setMND(double MND) {
-        this.MND = MND;
-    }
 }
