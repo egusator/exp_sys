@@ -1,14 +1,29 @@
 package org.example;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import static java.lang.Math.*;
 //todo
 public class KnowledgeBase {
     private Participant participant;
+    private Map<String, Double> technology;
     private final Scanner in;
     {
         in = new Scanner(System.in);
+        technology = new HashMap<String, Double>() {{
+            put("1" , 0.1);
+            put("2" , 0.1);
+            put("3" , 0.1);
+            put("4" , 0.1);
+            put("5" , 0.1);
+            put("6" , 0.1);
+            put("7" , 0.1);
+            put("8" , 0.1);
+            put("9" , 0.1);
+            put("10" , 0.1);
+        }};
     }
     public KnowledgeBase(Participant participant) {
         this.participant = participant;
@@ -27,7 +42,7 @@ public class KnowledgeBase {
         participant.changeMDJunior((1 - r) * k);
     }
 
-    public void questionEducation() {
+    public void questionEducation() { //2
         System.out.println("Какое у вас образование?\n" +
                 "Варианты ответов\n" +
                 "1 - 9 классов\n" +
@@ -39,11 +54,11 @@ public class KnowledgeBase {
     }
 
 
-    public void questionVUZ() {
+    public void questionVUZ() { //3
         System.out.println("Где вы учились:");
     }
 
-    public void questionEnglish() {
+    public void questionEnglish() { //4
         System.out.println("Как хорошо вы знаете английский:\n" +
                 "1 - свободно разговариваю и читаю\n" +
                 "2 - технический\n" +
@@ -52,7 +67,7 @@ public class KnowledgeBase {
                 "5 - только с переводчиком\n");
     }
 
-    public void questionFaculty() {
+    public void questionFaculty() { //5
         System.out.println("На каком факультете вы учились?:\n" +
                 "1 - гуманитарное\n" +
                 "2 - химическое/биолог\n" +
@@ -61,7 +76,7 @@ public class KnowledgeBase {
                 "5 - профильное\n");
     }
 
-    public void questionExperience() {
+    public void questionExperience() { //6
         System.out.println("Какой у вас опыт работы?:\n" +
                 "1 - гуманитарное\n" +
                 "2 - химическое/биолог\n" +
@@ -70,16 +85,23 @@ public class KnowledgeBase {
                 "5 - профильное\n");
     }
 
-    public void questionTenTechnologies() {
-        System.out.println("Выделите 1-10 технологий, которые вы последние использовали в своих проектах.:\n" +
-                "1 - гуманитарное\n" +
-                "2 - химическое/биолог\n" +
-                "3 - экономическое\n" +
-                "4 - инженерное\n" +
-                "5 - профильное\n");
+    public void questionTenTechnologies() {//7
+        System.out.println("\nВыделите 1-10 технологий, которые вы последние использовали в своих проектах\n" +
+                "(Выпишите цифры): " +
+                "\t1 - Java\n" +
+                "\t2 - SpringBoot\n" +
+                "\t3 - PostgreSQL/MYSQL\n" +
+                "\t4 - Oracle\n" +
+                "\t5 - Python\n" +
+                "\t7 - C#\n" +
+                "\t8 - Hibernate\n" +
+                "\t9 - Spring JDBC\n" +
+                "\t10 - C++\n");
+
+
     }
 
-    public void questionJavaCore() {
+    public void questionJavaCore() { //7
         int numOfCurrAnswers = 0;
         int numOfAnswers = 10;
         System.out.println("1/“Для чего используется оператор NEW?”\n" +
