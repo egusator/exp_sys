@@ -15,15 +15,15 @@ public class KnowledgeBase {
     {
         in = new Scanner(System.in);
         technology = new HashMap<String, CoeffsForTechnology>() {{
-            put("1", new CoeffsForTechnology(0.3, 0.6, 0, 0.1, 0.1, 0.1));
-            put("2", new CoeffsForTechnology(0.7, 0.5, 0, 0.1, 0.1, 0.5));
-            put("3", new CoeffsForTechnology(0.5, 0.7, 0.1, 0.1, 0.2, 0.5));
-            put("4", new CoeffsForTechnology(0.5, 0.7, 0.1, 0.1, 0.2, 0.5));
-            put("5", new CoeffsForTechnology(0.2, 0.5, 0.2, 0.1, 0.1, 0.3));
-            put("6", new CoeffsForTechnology(0.3, 0.5, 0.1, 0.1, 0.1, 0.4));
-            put("7", new CoeffsForTechnology(0.7, 0.5, 0.1, 0.1, 0.3, 0.7));
-            put("8", new CoeffsForTechnology(0.5, 0.6, 0, 0.1, 0.1, 0.4));
-            put("9", new CoeffsForTechnology(0.3, 0.6, 0.2, 0.6, 0.3, 0.3));
+            put("1", new CoeffsForTechnology(0.3, 0.6, 0, 0, 0, 0.1));
+            put("2", new CoeffsForTechnology(0.3, 0.2, 0, 0, 0, 0.4));
+            put("3", new CoeffsForTechnology(0.2, 0.2, 0.1, 0, 0.1, 0.3));
+            put("4", new CoeffsForTechnology(0.2, 0.2, 0.1, 0, 0.1, 0.3));
+            put("5", new CoeffsForTechnology(0.15, 0.3, 0.2, 0.1, 0, 0.2));
+            put("6", new CoeffsForTechnology(0.15, 0.3, 0.1, 0.1, 0, 0.25));
+            put("7", new CoeffsForTechnology(0.3, 0.1, 0, 0, 0.1, 0.45));
+            put("8", new CoeffsForTechnology(0.25, 0.15, 0, 0, 0.05, 0.4));
+            put("9", new CoeffsForTechnology(0.15, 0.3, 0.2, 0.1, 0, 0.2));
         }};
 
         ratingVUZ = new HashMap<String, Integer>() {{
@@ -45,13 +45,13 @@ public class KnowledgeBase {
                 "Введите число: \n");
         int age = in.nextInt();
         if (age >= 18 && age <= 20) {
-            participant.changeMDTrainee(0.8);
-            participant.changeMDNoob(0.8);
-            participant.changeMNDJunior(0.4);
+            participant.changeMDTrainee(0.2);
+            participant.changeMDNoob(0.1);
+            participant.changeMNDJunior(0.1);
         } else {
-            participant.changeMDJunior(0.8);
-            participant.changeMNDNoob(0.6);
-            participant.changeMNDTrainee(0.5);
+            participant.changeMDJunior(0.2);
+            participant.changeMNDNoob(0.2);
+            participant.changeMNDTrainee(0.15);
         }
     }
 
@@ -67,30 +67,30 @@ public class KnowledgeBase {
         int answer = in.nextInt();
         switch (answer) {
             case 1:
-                participant.changeMDNoob(0.9);
-                participant.changeMNDJunior(0.7);
-                participant.changeMNDTrainee(0.6);
+                participant.changeMDNoob(0.3);
+                participant.changeMNDJunior(0.3);
+                participant.changeMNDTrainee(0.2);
                 break;
             case 2:
-                participant.changeMDNoob(0.5);
-                participant.changeMDTrainee(0.2);
-                participant.changeMNDJunior(0.4);
+                participant.changeMDNoob(0.25);
+                participant.changeMDTrainee(0.1);
+                participant.changeMNDJunior(0.25);
                 break;
             case 3:
-                participant.changeMDTrainee(0.6);
-                participant.changeMDJunior(0.3);
-                participant.changeMNDNoob(0.3);
+                participant.changeMDTrainee(0.2);
+                participant.changeMDJunior(0.1);
+                participant.changeMNDNoob(0.15);
                 break;
             case 4:
-                participant.changeMDJunior(0.6);
-                participant.changeMNDTrainee(0.2);
-                participant.changeMNDNoob(0.6);
+                participant.changeMDJunior(0.2);
+                participant.changeMNDTrainee(0.1);
+                participant.changeMNDNoob(0.3);
                 break;
             case 5:
             case 6:
-                participant.changeMDJunior(0.8);
-                participant.changeMNDTrainee(0.5);
-                participant.changeMNDNoob(0.8);
+                participant.changeMDJunior(0.4);
+                participant.changeMNDTrainee(0.3);
+                participant.changeMNDNoob(0.5);
                 break;
         }
     }
@@ -103,18 +103,17 @@ public class KnowledgeBase {
         if (ratingVUZ.containsKey(answer)) {
             int r = ratingVUZ.get(answer);
             if (r <= 2) {
-                participant.changeMDJunior(0.7);
-                participant.changeMNDNoob(0.4);
-                participant.changeMNDTrainee(0.2);
-            } else {
-                participant.changeMDJunior(0.5);
-                participant.changeMDTrainee(0.6);
+                participant.changeMDJunior(0.4);
                 participant.changeMNDNoob(0.3);
+                participant.changeMNDTrainee(0.2);
+            } else if (r == 3) {
+                participant.changeMDJunior(0.15);
+                participant.changeMDTrainee(0.2);
+                participant.changeMNDNoob(0.25);
+            } else {
+                participant.changeMNDJunior(0.1);
+                participant.changeMDNoob(0.2);
             }
-
-        } else {
-            participant.changeMDNoob(0.2);
-            participant.changeMNDJunior(0.2);
         }
     }
 
@@ -127,15 +126,14 @@ public class KnowledgeBase {
         int answer = in.nextInt();
         switch (answer) {
             case 1:
-                participant.changeMDJunior(0.4);
+                participant.changeMDJunior(0.1);
                 break;
             case 2:
-                participant.changeMDTrainee(0.5);
-                participant.changeMDJunior(0.2);
+                participant.changeMDTrainee(0.2);
                 break;
             case 3:
-                participant.changeMDJunior(0.5);
-                participant.changeMNDNoob(0.5);
+                participant.changeMDJunior(0.25);
+                participant.changeMNDNoob(0.25);
                 break;
             case 4:
                 participant.changeMDNoob(0.5);
@@ -153,28 +151,29 @@ public class KnowledgeBase {
         int answer = in.nextInt();
         switch (answer) {
             case 1:
-                participant.changeMDNoob(0.7);
-                participant.changeMNDJunior(0.5);
-                participant.changeMNDTrainee(0.3);
+                participant.changeMDNoob(0.4);
+                participant.changeMNDJunior(0.3);
+                participant.changeMNDTrainee(0.2);
                 break;
             case 2:
-                participant.changeMDTrainee(0.4);
-                participant.changeMDNoob(0.2);
-                participant.changeMNDJunior(0.3);
+                participant.changeMDTrainee(0.1);
+                participant.changeMDNoob(0.15);
+                participant.changeMNDJunior(0.2);
                 break;
             case 3:
-                participant.changeMNDTrainee(0.6);
-                participant.changeMDJunior(0.1);
+                participant.changeMNDNoob(0.1);
+                participant.changeMDTrainee(0.2);
+                participant.changeMDJunior(0.05);
                 break;
             case 4:
-                participant.changeMDJunior(0.3);
-                participant.changeMDTrainee(0.6);
-                participant.changeMNDNoob(0.6);
+                participant.changeMDJunior(0.2);
+                participant.changeMDTrainee(0.3);
+                participant.changeMNDNoob(0.2);
                 break;
             case 5:
-                participant.changeMDJunior(0.6);
-                participant.changeMDTrainee(0.4);
-                participant.changeMNDNoob(0.6);
+                participant.changeMDJunior(0.3);
+                participant.changeMDTrainee(0.2);
+                participant.changeMNDNoob(0.3);
                 break;
         }
     }
@@ -188,7 +187,8 @@ public class KnowledgeBase {
         switch (answer) {
             case 1:
                 participant.changeMDTrainee(0.2);
-                participant.changeMNDJunior(0.3);
+                participant.changeMDNoob(0.2);
+                participant.changeMNDJunior(0.2);
                 break;
             case 2:
                 participant.changeMDJunior(0.5);
@@ -235,67 +235,131 @@ public class KnowledgeBase {
     }
 
     public void questionJavaCore() { //7
-        int numOfCurrAnswers = 0;
+        int points = 0;
         System.out.println("1/“Для чего используется оператор NEW?”\n" +
                 "\t1) Для создания новой переменной.\n" +
                 "\t2) Для объявления нового класса.\n" +
                 "\t3) Для создания экземпляра класса.\n" +
                 "\t4) Это антагонист оператора OLD.\n");
-        if (in.nextInt() == 3) numOfCurrAnswers++;
+        if (in.nextInt() == 3) {
+            participant.changeMDJunior(0.4);
+            participant.changeMDTrainee(0.2);
+            participant.changeMNDNoob(0.3);
+            points += 1;
+        } else {
+            participant.changeMDNoob(0.5);
+            participant.changeMNDJunior(0.4);
+        }
 
         System.out.println("2/Что означает ключевое слово extends?\n" +
                 "\t1)Что данный класс наследуется от другого\n" +
                 "\t2)Что это дополнительный модуль класса, который расширяет его свойства.\n" +
                 "\t3)Что два класса делают одно и то же.\n" +
                 "\t4)Что данный класс реализует интерфейс\n");
-        if (in.nextInt() == 1) numOfCurrAnswers++;
+        if (in.nextInt() == 1) {
+            participant.changeMDJunior(0.4);
+            participant.changeMDTrainee(0.2);
+            participant.changeMNDNoob(0.3);
+            points += 1;
+        } else {
+            participant.changeMNDTrainee(0.3);
+            participant.changeMDNoob(0.5);
+            participant.changeMNDJunior(0.4);
+        }
+
 
         System.out.println("3/Что означает перегрузка метода в Java (overload).\n" +
                 "\t1) Изменение поведения метода класса относительно родительского.\n" +
                 "\t2) Изменение поведения метода класса относительно дочернего.\n" +
                 "\t3) Несколько методов с одинаковым названием, но разным набором параметров.\n" +
                 "\t4) Несколько разных классов с одинаковым методом.\n");
-        if (in.nextInt() == 3) numOfCurrAnswers++;
+        if (in.nextInt() == 3) {
+            participant.changeMDJunior(0.4);
+            participant.changeMDTrainee(0.2);
+            participant.changeMNDNoob(0.3);
+            points += 1;
+
+        } else {
+            participant.changeMNDTrainee(0.3);
+            participant.changeMDNoob(0.5);
+            participant.changeMNDJunior(0.4);
+        }
+
 
         System.out.println("4/Что означает переопределение метода в Java (override).\n" +
                 "\t1) Изменение поведения метода класса относительно родительского.\n" +
                 "\t2) Изменение поведения метода класса относительно дочернего.\n" +
                 "\t3) Несколько методов с одинаковым названием, но разным набором параметров.\n" +
                 "\t4) Несколько разных классов с одинаковым методом.\n");
-        if (in.nextInt() == 1) numOfCurrAnswers++;
+        if (in.nextInt() == 1) {
+            participant.changeMDJunior(0.4);
+            participant.changeMDTrainee(0.2);
+            participant.changeMNDNoob(0.3);
+            points += 1;
+        } else {
+            participant.changeMDNoob(0.3);
+            participant.changeMNDTrainee(0.3);
+            participant.changeMNDJunior(0.4);
+        }
+
 
         System.out.println("5/Чем отличаются static-метод класса от обычного метода класса.\n" +
                 "\t1) Поведение обычного метода класса можно изменить в классе-наследнике, а поведение static-метода нельзя.\n" +
                 "\t2) Обычный метод класса можно переопределить, а static-метод нельзя.\n" +
                 "\t3) Обычный метод класса работает от объекта класса, а static-метод от всего класса.\n" +
                 "\t4) Static-метод класса можно вызывать только внутри класса, а обычный - в любой части кода.\n");
-        if (in.nextInt() == 3) numOfCurrAnswers++;
+        if (in.nextInt() == 3) {
+            participant.changeMDJunior(0.4);
+            participant.changeMDTrainee(0.2);
+            participant.changeMNDNoob(0.3);
+            points += 2;
+        } else {
+            participant.changeMDNoob(0.3);
+            participant.changeMNDJunior(0.4);
+        }
 
         System.out.println("6/Как вызвать static-метод внутри обычного?\n" +
                 "\t1) Никак, static-метод можно вызвать только от объекта класса.\n" +
                 "\t2) Можно, надо перед этим перегрузить обычный метод класса.\n" +
                 "\t3) Можно, надо перед этим переопределить обычный метод класса.\n" +
                 "\t4) Можно, ничего дополнительно делать не надо.\n");
-        if (in.nextInt() == 4) numOfCurrAnswers++;
+        if (in.nextInt() == 4) {
+            participant.changeMDJunior(0.4);
+            participant.changeMDTrainee(0.2);
+            participant.changeMNDNoob(0.3);
+            points += 2;
+        } else {
+            participant.changeMDNoob(0.3);
+            participant.changeMNDJunior(0.4);
+        }
 
         System.out.println("7/选择正确的陈述 Выберите правильность утверждения:\n" +
                 "\t1) Абстрактный класс может не содержать ни одного абстрактного метода\n" +
                 "\t2) Абстрактный класс должен содержать хотя бы один абстрактный метод\n" +
                 "\t3) Абстрактный метод может иметь тело, а может не иметь\n");
-        if (in.nextInt() == 1) numOfCurrAnswers++;
+        if (in.nextInt() == 1) {
+            participant.changeMDJunior(0.4);
+            participant.changeMDTrainee(0.2);
+            participant.changeMNDNoob(0.3);
+            points += 2;
+        } else {
+            participant.changeMDNoob(0.3);
+            participant.changeMNDJunior(0.4);
+        }
 
-        if (numOfCurrAnswers == 7) {
-            participant.changeMDJunior(0.8);
-            participant.changeMDTrainee(0.3);
+
+        if (points >= 10) {
+            participant.changeMDJunior(1);
+            participant.changeMNDTrainee(0.3);
             participant.changeMNDNoob(0.7);
-        } else if (numOfCurrAnswers > 5) {
-            participant.changeMDTrainee(0.8);
+        } else if (points >= 7) {
+            participant.changeMDTrainee(1);
             participant.changeMNDJunior(0.3);
             participant.changeMDNoob(0.2);
         } else {
             participant.changeMDNoob(0.8);
             participant.changeMNDJunior(0.9);
-            participant.changeMDTrainee(0.7);
+            participant.changeMNDTrainee(0.5);
         }
     }
 }

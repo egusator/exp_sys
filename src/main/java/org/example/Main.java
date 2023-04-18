@@ -11,7 +11,7 @@ public class Main {
         e.questionEnglish();
         e.questionFaculty();
         e.questionExperience();
-        //e.questionTenTechnologies();
+        e.questionTenTechnologies();
         e.questionJavaCore();
         System.out.println(p.getKUJunior());
         System.out.println(p.getKUTrainee());
