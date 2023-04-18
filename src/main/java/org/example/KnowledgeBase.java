@@ -15,7 +15,7 @@ public class KnowledgeBase {
     {
         in = new Scanner(System.in);
         technology = new HashMap<String, CoeffsForTechnology>() {{
-            put("1", new CoeffsForTechnology(0.3, 0.6, 0, 0, 0, 0.1));
+            put("1", new CoeffsForTechnology(0.15, 0.3, 0, 0, 0, 0.1));
             put("2", new CoeffsForTechnology(0.3, 0.2, 0, 0, 0, 0.4));
             put("3", new CoeffsForTechnology(0.2, 0.2, 0.1, 0, 0.1, 0.3));
             put("4", new CoeffsForTechnology(0.2, 0.2, 0.1, 0, 0.1, 0.3));
@@ -126,23 +126,25 @@ public class KnowledgeBase {
         int answer = in.nextInt();
         switch (answer) {
             case 1:
-                participant.changeMDJunior(0.1);
+                participant.changeMDJunior(0.2);
+                participant.changeMDTrainee(0.2);
                 break;
             case 2:
-                participant.changeMDTrainee(0.2);
+                participant.changeMDJunior(0.1);
+                participant.changeMDTrainee(0.1);
                 break;
             case 3:
                 participant.changeMDJunior(0.25);
                 participant.changeMNDNoob(0.25);
                 break;
             case 4:
-                participant.changeMDNoob(0.5);
+                participant.changeMDNoob(0.4);
                 break;
         }
     }
 
     public void questionFaculty() { //5
-        System.out.println("\nНа каком факультете вы учились?:\n" +
+        System.out.println("\nКакое у вас образование?:\n" +
                 "\t1 - гуманитарное\n" +
                 "\t2 - химическое/биолог\n" +
                 "\t3 - экономическое\n" +
@@ -151,27 +153,27 @@ public class KnowledgeBase {
         int answer = in.nextInt();
         switch (answer) {
             case 1:
-                participant.changeMDNoob(0.4);
-                participant.changeMNDJunior(0.3);
-                participant.changeMNDTrainee(0.2);
+                participant.changeMDNoob(0.3);
+                participant.changeMNDJunior(0.2);
+                participant.changeMNDTrainee(0.1);
                 break;
             case 2:
                 participant.changeMDTrainee(0.1);
                 participant.changeMDNoob(0.15);
-                participant.changeMNDJunior(0.2);
+                participant.changeMNDJunior(0.15);
                 break;
             case 3:
                 participant.changeMNDNoob(0.1);
-                participant.changeMDTrainee(0.2);
+                participant.changeMDTrainee(0.1);
                 participant.changeMDJunior(0.05);
                 break;
             case 4:
-                participant.changeMDJunior(0.2);
-                participant.changeMDTrainee(0.3);
+                participant.changeMDJunior(0.1);
+                participant.changeMDTrainee(0.2);
                 participant.changeMNDNoob(0.2);
                 break;
             case 5:
-                participant.changeMDJunior(0.3);
+                participant.changeMDJunior(0.2);
                 participant.changeMDTrainee(0.2);
                 participant.changeMNDNoob(0.3);
                 break;
@@ -188,12 +190,12 @@ public class KnowledgeBase {
             case 1:
                 participant.changeMDTrainee(0.2);
                 participant.changeMDNoob(0.2);
-                participant.changeMNDJunior(0.2);
+                participant.changeMNDJunior(0.1);
                 break;
             case 2:
-                participant.changeMDJunior(0.5);
-                participant.changeMNDTrainee(0.3);
-                participant.changeMNDNoob(0.6);
+                participant.changeMDJunior(0.4);
+                participant.changeMNDTrainee(0.2);
+                participant.changeMNDNoob(0.5);
                 break;
             case 3:
                 participant.changeMDJunior(0.7);
@@ -228,9 +230,9 @@ public class KnowledgeBase {
             participant.changeMNDNoob(coeffs.getCoefMNDNoob());
         }
         if (answeredTechnologies.length < 3) {
-            participant.changeMDNoob(0.8);
-            participant.changeMNDJunior(0.5);
-            participant.changeMNDTrainee(0.3);
+            participant.changeMDNoob(0.6);
+            participant.changeMNDJunior(0.4);
+            participant.changeMNDTrainee(0.2);
         }
     }
 
