@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -10,79 +9,198 @@ import static java.lang.Math.*;
 public class KnowledgeBase {
     private Participant participant;
     private Map<String, CoeffsForTechnology> technology;
+    private Map<String, Integer> ratingVUZ;
     private final Scanner in;
+
     {
         in = new Scanner(System.in);
         technology = new HashMap<String, CoeffsForTechnology>() {{
-            put("1" , new CoeffsForTechnology(0.9, 0.9, 0.9, 0.2, 0.1, 0.1));
-            put("2" , new CoeffsForTechnology(0.9, 0.7, 0.2, 0.1, 0.15, 0.5));
-            put("3" , new CoeffsForTechnology(0.9, 0.5, 0.1, 0.1, 0.3, 0.8));
-            put("4" , new CoeffsForTechnology(0.8, 0.8, 0.1, 0.2, 0.15, 0.7));
-            put("5" , new CoeffsForTechnology(0.3, 0.5, 0.8, 0.8, 0.4, 0.3));
-            put("6" , new CoeffsForTechnology(0.4, 0.65, 0.7, 0.7, 0.3, 0.5));
-            put("7" , new CoeffsForTechnology(0.9, 0.6, 0.2, 0.1, 0.4, 0.7));
-            put("8" , new CoeffsForTechnology(0.6, 0.9, 0.2, 0.4, 0.1, 0.7));
-            put("9" , new CoeffsForTechnology(0.4, 0.6, 0.6, 0.6, 0.4, 0.3));
+            put("1", new CoeffsForTechnology(0.3, 0.6, 0, 0.1, 0.1, 0.1));
+            put("2", new CoeffsForTechnology(0.7, 0.5, 0, 0.1, 0.1, 0.5));
+            put("3", new CoeffsForTechnology(0.5, 0.7, 0.1, 0.1, 0.2, 0.5));
+            put("4", new CoeffsForTechnology(0.5, 0.7, 0.1, 0.1, 0.2, 0.5));
+            put("5", new CoeffsForTechnology(0.2, 0.5, 0.2, 0.1, 0.1, 0.3));
+            put("6", new CoeffsForTechnology(0.3, 0.5, 0.1, 0.1, 0.1, 0.4));
+            put("7", new CoeffsForTechnology(0.7, 0.5, 0.1, 0.1, 0.3, 0.7));
+            put("8", new CoeffsForTechnology(0.5, 0.6, 0, 0.1, 0.1, 0.4));
+            put("9", new CoeffsForTechnology(0.3, 0.6, 0.2, 0.6, 0.3, 0.3));
+        }};
+
+        ratingVUZ = new HashMap<String, Integer>() {{
+            put("ТГУ", 1);
+            put("ТПУ", 1);
+            put("МГУ", 2);
+            put("МФТИ", 2);
+            put("НГУ", 3);
+            put("ТУСУР", 3);
         }};
     }
+
     public KnowledgeBase(Participant participant) {
         this.participant = participant;
-    }
-
-    private double getRatingOfAge(double age) {
-        return 1 / sqrt(2 * 3.14) * exp( - ((24 - age) * (24 - age)) / 2 );
     }
 
     public void questionHowOld() {
         System.out.println("Сколько вам лет?\n" +
                 "Введите число: \n");
         int age = in.nextInt();
-        double k = 0.1;// коэффициент от 0 до 1 в зависимости от того насколько важный вопрос
-        double r = getRatingOfAge(age);
-        participant.changeMNDJunior((1 - r) * k);
+        if (age >= 18 && age <= 20) {
+            participant.changeMDTrainee(0.8);
+            participant.changeMDNoob(0.8);
+            participant.changeMNDJunior(0.4);
+        } else {
+            participant.changeMDJunior(0.8);
+            participant.changeMNDNoob(0.6);
+            participant.changeMNDTrainee(0.5);
+        }
     }
 
     public void questionEducation() { //2
-        System.out.println("Какое у вас образование?\n" +
+        System.out.println("\nКакое у вас образование?\n" +
                 "Варианты ответов\n" +
-                "1 - 9 классов\n" +
-                "2 - 11 классов\n" +
-                "3 - среднее спец образование\n" +
-                "4 - высшее(бакалавр)\n" +
-                "5 - высшее(маг)\n" +
-                "6 - аспирант\n");
+                "\t1 - 9 классов\n" +
+                "\t2 - 11 классов\n" +
+                "\t3 - среднее спец образование\n" +
+                "\t4 - высшее(бакалавр)\n" +
+                "\t5 - высшее(маг)\n" +
+                "\t6 - аспирант\n");
+        int answer = in.nextInt();
+        switch (answer) {
+            case 1:
+                participant.changeMDNoob(0.9);
+                participant.changeMNDJunior(0.7);
+                participant.changeMNDTrainee(0.6);
+                break;
+            case 2:
+                participant.changeMDNoob(0.5);
+                participant.changeMDTrainee(0.2);
+                participant.changeMNDJunior(0.4);
+                break;
+            case 3:
+                participant.changeMDTrainee(0.6);
+                participant.changeMDJunior(0.3);
+                participant.changeMNDNoob(0.3);
+                break;
+            case 4:
+                participant.changeMDJunior(0.6);
+                participant.changeMNDTrainee(0.2);
+                participant.changeMNDNoob(0.6);
+                break;
+            case 5:
+            case 6:
+                participant.changeMDJunior(0.8);
+                participant.changeMNDTrainee(0.5);
+                participant.changeMNDNoob(0.8);
+                break;
+        }
     }
 
 
     public void questionVUZ() { //3
-        System.out.println("Где вы учились:");
+        System.out.println("\nГде вы учились:\n");
+        in.nextLine();
+        String answer = in.nextLine();
+        if (ratingVUZ.containsKey(answer)) {
+            int r = ratingVUZ.get(answer);
+            if (r <= 2) {
+                participant.changeMDJunior(0.7);
+                participant.changeMNDNoob(0.4);
+                participant.changeMNDTrainee(0.2);
+            } else {
+                participant.changeMDJunior(0.5);
+                participant.changeMDTrainee(0.6);
+                participant.changeMNDNoob(0.3);
+            }
+
+        } else {
+            participant.changeMDNoob(0.2);
+            participant.changeMNDJunior(0.2);
+        }
     }
 
     public void questionEnglish() { //4
-        System.out.println("Как хорошо вы знаете английский:\n" +
-                "1 - свободно разговариваю и читаю\n" +
-                "2 - технический\n" +
-                "3 - нормик\n" +
-                "4 - очень плохо\n" +
-                "5 - только с переводчиком\n");
+        System.out.println("\nКак хорошо вы знаете английский?:\n" +
+                "\t1 - свободно разговариваю и читаю\n" +
+                "\t2 - средний уровень\n" +
+                "\t3 - технический\n" +
+                "\t4 - только с переводчиком\n");
+        int answer = in.nextInt();
+        switch (answer) {
+            case 1:
+                participant.changeMDJunior(0.4);
+                break;
+            case 2:
+                participant.changeMDTrainee(0.5);
+                participant.changeMDJunior(0.2);
+                break;
+            case 3:
+                participant.changeMDJunior(0.5);
+                participant.changeMNDNoob(0.5);
+                break;
+            case 4:
+                participant.changeMDNoob(0.5);
+                break;
+        }
     }
 
     public void questionFaculty() { //5
-        System.out.println("На каком факультете вы учились?:\n" +
-                "1 - гуманитарное\n" +
-                "2 - химическое/биолог\n" +
-                "3 - экономическое\n" +
-                "4 - инженерное\n" +
-                "5 - профильное\n");
+        System.out.println("\nНа каком факультете вы учились?:\n" +
+                "\t1 - гуманитарное\n" +
+                "\t2 - химическое/биолог\n" +
+                "\t3 - экономическое\n" +
+                "\t4 - инженерное\n" +
+                "\t5 - профильное\n");
+        int answer = in.nextInt();
+        switch (answer) {
+            case 1:
+                participant.changeMDNoob(0.7);
+                participant.changeMNDJunior(0.5);
+                participant.changeMNDTrainee(0.3);
+                break;
+            case 2:
+                participant.changeMDTrainee(0.4);
+                participant.changeMDNoob(0.2);
+                participant.changeMNDJunior(0.3);
+                break;
+            case 3:
+                participant.changeMNDTrainee(0.6);
+                participant.changeMDJunior(0.1);
+                break;
+            case 4:
+                participant.changeMDJunior(0.3);
+                participant.changeMDTrainee(0.6);
+                participant.changeMNDNoob(0.6);
+                break;
+            case 5:
+                participant.changeMDJunior(0.6);
+                participant.changeMDTrainee(0.4);
+                participant.changeMNDNoob(0.6);
+                break;
+        }
     }
 
     public void questionExperience() { //6
-        System.out.println("Какой у вас опыт работы?:\n" +
-                "1 - гуманитарное\n" +
-                "2 - химическое/биолог\n" +
-                "3 - экономическое\n" +
-                "4 - инженерное\n" +
-                "5 - профильное\n");
+        System.out.println("\nКакой у вас опыт работы?:\n" +
+                "1 - 0\n" +
+                "2 - меньше года\n" +
+                "3 - больше года\n");
+        int answer = in.nextInt();
+        switch (answer) {
+            case 1:
+                participant.changeMDTrainee(0.2);
+                participant.changeMNDJunior(0.3);
+                break;
+            case 2:
+                participant.changeMDJunior(0.5);
+                participant.changeMNDTrainee(0.3);
+                participant.changeMNDNoob(0.6);
+                break;
+            case 3:
+                participant.changeMDJunior(0.7);
+                participant.changeMNDTrainee(0.5);
+                participant.changeMNDNoob(0.8);
+                break;
+        }
     }
 
     public void questionTenTechnologies() {//7
@@ -97,9 +215,10 @@ public class KnowledgeBase {
                 "\t7 - Hibernate\n" +
                 "\t8 - Spring JDBC\n" +
                 "\t9 - C++\n");
+        in.nextLine();
         String answer = in.nextLine();
         String[] answeredTechnologies = answer.split("\\s+");
-        for(String s: answeredTechnologies) {
+        for (String s : answeredTechnologies) {
             CoeffsForTechnology coeffs = technology.get(s);
             participant.changeMDJunior(coeffs.getCoefMDJunior());
             participant.changeMDTrainee(coeffs.getCoefMDTrainee());
@@ -108,12 +227,15 @@ public class KnowledgeBase {
             participant.changeMNDTrainee(coeffs.getCoefMNDTrainee());
             participant.changeMNDNoob(coeffs.getCoefMNDNoob());
         }
-
+        if (answeredTechnologies.length < 3) {
+            participant.changeMDNoob(0.8);
+            participant.changeMNDJunior(0.5);
+            participant.changeMNDTrainee(0.3);
+        }
     }
 
     public void questionJavaCore() { //7
         int numOfCurrAnswers = 0;
-        int numOfAnswers = 10;
         System.out.println("1/“Для чего используется оператор NEW?”\n" +
                 "\t1) Для создания новой переменной.\n" +
                 "\t2) Для объявления нового класса.\n" +
@@ -124,25 +246,23 @@ public class KnowledgeBase {
         System.out.println("2/Что означает ключевое слово extends?\n" +
                 "\t1)Что данный класс наследуется от другого\n" +
                 "\t2)Что это дополнительный модуль класса, который расширяет его свойства.\n" +
-                "\t3) Что два класса делают одно и то же.\n" +
+                "\t3)Что два класса делают одно и то же.\n" +
                 "\t4)Что данный класс реализует интерфейс\n");
-        if (in.nextInt() == 3) numOfCurrAnswers++;
+        if (in.nextInt() == 1) numOfCurrAnswers++;
 
         System.out.println("3/Что означает перегрузка метода в Java (overload).\n" +
-                "   \t1) Изменение поведения метода класса относительно родительского.\n" +
+                "\t1) Изменение поведения метода класса относительно родительского.\n" +
                 "\t2) Изменение поведения метода класса относительно дочернего.\n" +
                 "\t3) Несколько методов с одинаковым названием, но разным набором параметров.\n" +
-                "\t4) \n" +
-                "Несколько разных классов с одинаковым методом.\n");
+                "\t4) Несколько разных классов с одинаковым методом.\n");
         if (in.nextInt() == 3) numOfCurrAnswers++;
 
         System.out.println("4/Что означает переопределение метода в Java (override).\n" +
                 "\t1) Изменение поведения метода класса относительно родительского.\n" +
                 "\t2) Изменение поведения метода класса относительно дочернего.\n" +
-                "\n" +
                 "\t3) Несколько методов с одинаковым названием, но разным набором параметров.\n" +
                 "\t4) Несколько разных классов с одинаковым методом.\n");
-        if (in.nextInt() == 3) numOfCurrAnswers++;
+        if (in.nextInt() == 1) numOfCurrAnswers++;
 
         System.out.println("5/Чем отличаются static-метод класса от обычного метода класса.\n" +
                 "\t1) Поведение обычного метода класса можно изменить в классе-наследнике, а поведение static-метода нельзя.\n" +
@@ -151,24 +271,31 @@ public class KnowledgeBase {
                 "\t4) Static-метод класса можно вызывать только внутри класса, а обычный - в любой части кода.\n");
         if (in.nextInt() == 3) numOfCurrAnswers++;
 
-
         System.out.println("6/Как вызвать static-метод внутри обычного?\n" +
                 "\t1) Никак, static-метод можно вызвать только от объекта класса.\n" +
                 "\t2) Можно, надо перед этим перегрузить обычный метод класса.\n" +
                 "\t3) Можно, надо перед этим переопределить обычный метод класса.\n" +
                 "\t4) Можно, ничего дополнительно делать не надо.\n");
-        if (in.nextInt() == 3) numOfCurrAnswers++;
+        if (in.nextInt() == 4) numOfCurrAnswers++;
 
-        System.out.println("7/Выберите верные утверждения:\n" +
+        System.out.println("7/选择正确的陈述 Выберите правильность утверждения:\n" +
                 "\t1) Абстрактный класс может не содержать ни одного абстрактного метода\n" +
-                "\tЭтот ответ также является верным.\n" +
-                "\tАбстрактный класс должен содержать хотя бы один абстрактный метод\n" +
-                "\tАбстрактный метод может иметь тело, а может не иметь\n" +
-                "\tМетоды в интерфейсе могут иметь тело, а могут не иметь\n");
-        if (in.nextInt() == 3) numOfCurrAnswers++;
+                "\t2) Абстрактный класс должен содержать хотя бы один абстрактный метод\n" +
+                "\t3) Абстрактный метод может иметь тело, а может не иметь\n");
+        if (in.nextInt() == 1) numOfCurrAnswers++;
 
-
-        double k = numOfCurrAnswers/numOfAnswers;
+        if (numOfCurrAnswers == 7) {
+            participant.changeMDJunior(0.8);
+            participant.changeMDTrainee(0.3);
+            participant.changeMNDNoob(0.7);
+        } else if (numOfCurrAnswers > 5) {
+            participant.changeMDTrainee(0.8);
+            participant.changeMNDJunior(0.3);
+            participant.changeMDNoob(0.2);
+        } else {
+            participant.changeMDNoob(0.8);
+            participant.changeMNDJunior(0.9);
+            participant.changeMDTrainee(0.7);
+        }
     }
-
 }

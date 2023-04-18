@@ -3,13 +3,13 @@ package org.example;
 
 
 public class Participant {
-    double MDJunior;
-    double MNDJunior;
-    double MDTrainee;
-    double MNDTrainee;
+    private double MDJunior;
+    private double MNDJunior;
+    private double MDTrainee;
+    private double MNDTrainee;
 
-    double MDNoob;
-    double MNDNoob;
+    private double MDNoob;
+    private double MNDNoob;
     Participant () {
         MDJunior = 0;
         MNDJunior = 0;
@@ -42,6 +42,16 @@ public class Participant {
 
     public void changeMNDNoob(double koef) {
         MNDNoob = MNDNoob + koef * (1 - MNDNoob);
+    }
+
+    public double getKUJunior() {
+        return MDJunior - MNDJunior;
+    }
+    public double getKUTrainee() {
+        return MDTrainee - MNDTrainee;
+    }
+    public double getKUNoob() {
+        return MDNoob - MNDNoob;
     }
 
 }
