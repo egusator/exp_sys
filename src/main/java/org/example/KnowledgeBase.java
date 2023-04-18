@@ -221,7 +221,7 @@ public class KnowledgeBase {
                 System.out.println("\nВведите количество месяцев:\n");
                 int monthAmount = in.nextInt();
 
-                System.out.println("\nВыделите технологии, которые вы использовали в работ\n" +
+                System.out.println("\nВыделите технологии, которые вы использовали в работе\n" +
                         "(Выпишите цифры): " +
                         "\t1 - Java\n" +
                         "\t2 - SpringBoot\n" +
@@ -255,7 +255,7 @@ public class KnowledgeBase {
     }
 
     public void questionTenTechnologies() {//7
-        System.out.println("\nВыделите 1-10 технологий, которые вы последние использовали в своих проектах помимо работы\n" +
+        System.out.println("\nВыделите 1-10 технологий, которые вы использовали в своих проектах помимо работы\n" +
                 "(Выпишите цифры): " +
                 "\t1 - Java\n" +
                 "\t2 - SpringBoot\n" +
