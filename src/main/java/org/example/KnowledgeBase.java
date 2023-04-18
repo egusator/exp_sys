@@ -10,6 +10,9 @@ public class KnowledgeBase {
     private Participant participant;
     private Map<String, CoeffsForTechnology> technology;
     private Map<String, Integer> ratingVUZ;
+
+    private Map<String, Integer> ratingCompanies;
+
     private final Scanner in;
 
     {
@@ -34,6 +37,12 @@ public class KnowledgeBase {
             put("НГУ", 3);
             put("ТУСУР", 3);
         }};
+        ratingCompanies = new HashMap<String, Integer>() {{
+            put("Яндекс", 1);
+            put("Сбербанк", 1);
+            put("Тинькофф", 2);
+            put("ЦФТ", 2);
+        }};
     }
 
     public KnowledgeBase(Participant participant) {
@@ -44,7 +53,7 @@ public class KnowledgeBase {
         System.out.println("Сколько вам лет?\n" +
                 "Введите число: \n");
         int age = in.nextInt();
-        if (age >= 18 && age <= 20) {
+        if (age <= 20) {
             participant.changeMDTrainee(0.2);
             participant.changeMDNoob(0.1);
             participant.changeMNDJunior(0.1);
@@ -180,33 +189,73 @@ public class KnowledgeBase {
         }
     }
 
-    public void questionExperience() { //6
-        System.out.println("\nКакой у вас опыт работы?:\n" +
-                "1 - 0\n" +
-                "2 - меньше года\n" +
-                "3 - больше года\n");
+    public void questionExperience() {
+        System.out.println("\nВы где то работали?:\n" +
+                "1 - да\n" +
+                "2 - нет\n");
         int answer = in.nextInt();
-        switch (answer) {
-            case 1:
-                participant.changeMDTrainee(0.2);
-                participant.changeMDNoob(0.2);
-                participant.changeMNDJunior(0.1);
-                break;
-            case 2:
-                participant.changeMDJunior(0.4);
-                participant.changeMNDTrainee(0.2);
-                participant.changeMNDNoob(0.5);
-                break;
-            case 3:
-                participant.changeMDJunior(0.7);
-                participant.changeMNDTrainee(0.5);
-                participant.changeMNDNoob(0.8);
-                break;
+        if (answer == 2) {
+            participant.changeMDTrainee(0.2);
+            participant.changeMDNoob(0.2);
+            participant.changeMNDJunior(0.1);
+        } else {
+            int number = 0;
+            System.out.println("\nВводите по порядку:\n");
+            for(;;) {
+                number++;
+                System.out.println("\nМесто работы " + number + "\n");
+                System.out.println("\nВведите название компании:\n");
+                in.nextLine();
+                String name = in.nextLine();
+                if (ratingCompanies.containsKey(name)) {
+                    if (ratingCompanies.get(name) == 1) {
+                        participant.changeMDJunior(0.4);
+                        participant.changeMNDNoob(0.3);
+                        participant.changeMNDTrainee(0.2);
+                    } else if (ratingCompanies.get(name) == 2) {
+                        participant.changeMDJunior(0.25);
+                        participant.changeMNDNoob(0.2);
+                        participant.changeMNDTrainee(0.1);
+                    }
+                }
+                System.out.println("\nВведите количество месяцев:\n");
+                int monthAmount = in.nextInt();
+
+                System.out.println("\nВыделите технологии, которые вы использовали в работ\n" +
+                        "(Выпишите цифры): " +
+                        "\t1 - Java\n" +
+                        "\t2 - SpringBoot\n" +
+                        "\t3 - PostgreSQL\n" +
+                        "\t4 - MYSQL\n" +
+                        "\t5 - Python\n" +
+                        "\t6 - C#\n" +
+                        "\t7 - Hibernate\n" +
+                        "\t8 - Spring JDBC\n" +
+                        "\t9 - C++\n");
+                in.nextLine();
+                String techs = in.nextLine();
+                String[] answeredTechnologies = techs.split("\\s+");
+                for (String s : answeredTechnologies) {
+                    CoeffsForTechnology coeffs = technology.get(s);
+                    participant.changeMDJunior(((double)monthAmount) / 9 * coeffs.getCoefMDJunior());
+                    participant.changeMDTrainee(((double)monthAmount) / 9 *coeffs.getCoefMDTrainee());
+                    participant.changeMDNoob(((double)monthAmount) / 9 *coeffs.getCoefMDNoob());
+                    participant.changeMNDJunior(((double)monthAmount) / 9 *coeffs.getCoefMNDJunior());
+                    participant.changeMNDTrainee(((double)monthAmount) / 9 *coeffs.getCoefMNDTrainee());
+                    participant.changeMNDNoob(((double)monthAmount) / 9 *coeffs.getCoefMNDNoob());
+                }
+                System.out.println("\nБыли еще места работы?:\n" +
+                        "1 - да\n" +
+                        "2 - нет\n");
+                if (in.nextInt() == 2) {
+                    break;
+                }
+            }
         }
     }
 
     public void questionTenTechnologies() {//7
-        System.out.println("\nВыделите 1-10 технологий, которые вы последние использовали в своих проектах\n" +
+        System.out.println("\nВыделите 1-10 технологий, которые вы последние использовали в своих проектах помимо работы\n" +
                 "(Выпишите цифры): " +
                 "\t1 - Java\n" +
                 "\t2 - SpringBoot\n" +
@@ -249,8 +298,9 @@ public class KnowledgeBase {
             participant.changeMNDNoob(0.3);
             points += 1;
         } else {
-            participant.changeMDNoob(0.5);
-            participant.changeMNDJunior(0.4);
+            participant.changeMDNoob(0.6);
+            participant.changeMNDTrainee(0.4);
+            participant.changeMNDJunior(0.6);
         }
 
         System.out.println("2/Что означает ключевое слово extends?\n" +
@@ -264,9 +314,9 @@ public class KnowledgeBase {
             participant.changeMNDNoob(0.3);
             points += 1;
         } else {
-            participant.changeMNDTrainee(0.3);
-            participant.changeMDNoob(0.5);
-            participant.changeMNDJunior(0.4);
+            participant.changeMDNoob(0.6);
+            participant.changeMNDTrainee(0.4);
+            participant.changeMNDJunior(0.6);
         }
 
 
@@ -282,9 +332,9 @@ public class KnowledgeBase {
             points += 1;
 
         } else {
-            participant.changeMNDTrainee(0.3);
-            participant.changeMDNoob(0.5);
-            participant.changeMNDJunior(0.4);
+            participant.changeMDNoob(0.6);
+            participant.changeMNDTrainee(0.4);
+            participant.changeMNDJunior(0.6);
         }
 
 
@@ -299,9 +349,9 @@ public class KnowledgeBase {
             participant.changeMNDNoob(0.3);
             points += 1;
         } else {
-            participant.changeMDNoob(0.3);
-            participant.changeMNDTrainee(0.3);
-            participant.changeMNDJunior(0.4);
+            participant.changeMDNoob(0.6);
+            participant.changeMNDTrainee(0.4);
+            participant.changeMNDJunior(0.6);
         }
 
 
@@ -316,7 +366,7 @@ public class KnowledgeBase {
             participant.changeMNDNoob(0.3);
             points += 2;
         } else {
-            participant.changeMDNoob(0.3);
+            participant.changeMDNoob(0.2);
             participant.changeMNDJunior(0.4);
         }
 
@@ -331,7 +381,7 @@ public class KnowledgeBase {
             participant.changeMNDNoob(0.3);
             points += 2;
         } else {
-            participant.changeMDNoob(0.3);
+            participant.changeMDNoob(0.2);
             participant.changeMNDJunior(0.4);
         }
 
@@ -345,7 +395,7 @@ public class KnowledgeBase {
             participant.changeMNDNoob(0.3);
             points += 2;
         } else {
-            participant.changeMDNoob(0.3);
+            participant.changeMDNoob(0.2);
             participant.changeMNDJunior(0.4);
         }
 
@@ -356,12 +406,12 @@ public class KnowledgeBase {
             participant.changeMNDNoob(0.7);
         } else if (points >= 7) {
             participant.changeMDTrainee(1);
-            participant.changeMNDJunior(0.3);
-            participant.changeMDNoob(0.2);
+            participant.changeMNDJunior(0.5);
+            participant.changeMNDNoob(0.2);
         } else {
             participant.changeMDNoob(0.8);
             participant.changeMNDJunior(0.9);
-            participant.changeMNDTrainee(0.5);
+            participant.changeMNDTrainee(0.7);
         }
     }
 }
