@@ -1,28 +1,28 @@
 package org.example;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 import static java.lang.Math.*;
-//todo
+
 public class KnowledgeBase {
     private Participant participant;
-    private Map<String, Double> technology;
+    private Map<String, CoeffsForTechnology> technology;
     private final Scanner in;
     {
         in = new Scanner(System.in);
-        technology = new HashMap<String, Double>() {{
-            put("1" , 0.1);
-            put("2" , 0.1);
-            put("3" , 0.1);
-            put("4" , 0.1);
-            put("5" , 0.1);
-            put("6" , 0.1);
-            put("7" , 0.1);
-            put("8" , 0.1);
-            put("9" , 0.1);
-            put("10" , 0.1);
+        technology = new HashMap<String, CoeffsForTechnology>() {{
+            put("1" , new CoeffsForTechnology(0.9, 0.9, 0.9, 0.2, 0.1, 0.1));
+            put("2" , new CoeffsForTechnology(0.9, 0.7, 0.2, 0.1, 0.15, 0.5));
+            put("3" , new CoeffsForTechnology(0.9, 0.5, 0.1, 0.1, 0.3, 0.8));
+            put("4" , new CoeffsForTechnology(0.8, 0.8, 0.1, 0.2, 0.15, 0.7));
+            put("5" , new CoeffsForTechnology(0.3, 0.5, 0.8, 0.8, 0.4, 0.3));
+            put("6" , new CoeffsForTechnology(0.4, 0.65, 0.7, 0.7, 0.3, 0.5));
+            put("7" , new CoeffsForTechnology(0.9, 0.6, 0.2, 0.1, 0.4, 0.7));
+            put("8" , new CoeffsForTechnology(0.6, 0.9, 0.2, 0.4, 0.1, 0.7));
+            put("9" , new CoeffsForTechnology(0.4, 0.6, 0.6, 0.6, 0.4, 0.3));
         }};
     }
     public KnowledgeBase(Participant participant) {
@@ -39,7 +39,7 @@ public class KnowledgeBase {
         int age = in.nextInt();
         double k = 0.1;// коэффициент от 0 до 1 в зависимости от того насколько важный вопрос
         double r = getRatingOfAge(age);
-        participant.changeMDJunior((1 - r) * k);
+        participant.changeMNDJunior((1 - r) * k);
     }
 
     public void questionEducation() { //2
@@ -90,14 +90,24 @@ public class KnowledgeBase {
                 "(Выпишите цифры): " +
                 "\t1 - Java\n" +
                 "\t2 - SpringBoot\n" +
-                "\t3 - PostgreSQL/MYSQL\n" +
-                "\t4 - Oracle\n" +
+                "\t3 - PostgreSQL\n" +
+                "\t4 - MYSQL\n" +
                 "\t5 - Python\n" +
-                "\t7 - C#\n" +
-                "\t8 - Hibernate\n" +
-                "\t9 - Spring JDBC\n" +
-                "\t10 - C++\n");
-
+                "\t6 - C#\n" +
+                "\t7 - Hibernate\n" +
+                "\t8 - Spring JDBC\n" +
+                "\t9 - C++\n");
+        String answer = in.nextLine();
+        String[] answeredTechnologies = answer.split("\\s+");
+        for(String s: answeredTechnologies) {
+            CoeffsForTechnology coeffs = technology.get(s);
+            participant.changeMDJunior(coeffs.getCoefMDJunior());
+            participant.changeMDTrainee(coeffs.getCoefMDTrainee());
+            participant.changeMDNoob(coeffs.getCoefMDNoob());
+            participant.changeMNDJunior(coeffs.getCoefMNDJunior());
+            participant.changeMNDTrainee(coeffs.getCoefMNDTrainee());
+            participant.changeMNDNoob(coeffs.getCoefMNDNoob());
+        }
 
     }
 
@@ -159,7 +169,6 @@ public class KnowledgeBase {
 
 
         double k = numOfCurrAnswers/numOfAnswers;
-
     }
 
 }
